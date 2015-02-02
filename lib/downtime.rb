@@ -70,5 +70,11 @@ module Downtime
     def timestamp!
       @timestamp = Timestamp.new
     end
+
+    def append_to_logfile text
+      File.open(@log_file, 'a') do |f|
+        f.puts text
+      end
+    end
   end
 end
