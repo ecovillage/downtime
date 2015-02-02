@@ -2,8 +2,12 @@
 
 require 'downtime'
 
+if ARGV.length
+  puts "downtime #{Downtime::VERSION} - updates downtime.log according to output of dig command."
+  exit 0
+end
+
 check = Downtime::DowntimeCheck.new
-check.perform
 
 # I'd like a friendly exit code
 
@@ -14,3 +18,7 @@ check.perform
 #  Downtime.down_now!
 #  exit 1
 #end
+
+# Semantics are a bit weird, exit 0 if not down
+
+exit check.perform ? 0 : 1

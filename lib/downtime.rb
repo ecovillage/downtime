@@ -54,6 +54,7 @@ module Downtime
       File.open(@log_file, 'w') do |f|
         f.puts lines
       end
+      up
     end
 
     def is_up? host=nil
