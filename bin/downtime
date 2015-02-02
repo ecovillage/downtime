@@ -2,18 +2,10 @@
 
 require 'downtime'
 
-# Check last state
-# check current state
-# if last = up
-#   if current = up
-#   if current = down
-# if last = down
-#   if current = up
-#   if current = down
-#
-
 check = Downtime::DowntimeCheck.new
 check.perform
+
+# I'd like a friendly exit code
 
 #if Downtime.up?
 #  Downtime.up_now!
