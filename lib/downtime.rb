@@ -37,14 +37,14 @@ module Downtime
         else
           # "stayed down"
           # Modify last line.
-          lines[-1].gsub!(/till.*/, "till #{@timestamp}")
+          lines[-1].gsub!(/till.*/, "till #{@timestamp} (#{minutes} minutes)")
         end
       else
         # was up before
         if up
           # "stayed up."
           # Modify last line.
-          lines[-1].gsub!(/till.*/, "till #{@timestamp}")
+          lines[-1].gsub!(/till.*/, "till #{@timestamp} (#{minutes} minutes)")
         else
           # "went down."
           lines << "! went down after #{minutes} minutes of uptime."
