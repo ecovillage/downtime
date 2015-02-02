@@ -27,7 +27,6 @@ module Downtime
       if lines.length > 1
         first_timestamp = lines[-1][/^[0-9-]*/]
         minutes = (@timestamp - Timestamp.from_s(first_timestamp))
-        puts minutes
       end
       if was_down || lines.length <= 1
         if up
