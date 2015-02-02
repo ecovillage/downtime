@@ -2,7 +2,7 @@
 
 require 'downtime'
 
-if ARGV.length
+if ARGV.length >= 1
   puts "downtime #{Downtime::VERSION} - updates downtime.log according to output of dig command."
   exit 0
 end
