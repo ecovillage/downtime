@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require 'downtime'
+
+# Check last state
+# check current state
+# if last = up
+#   if current = up
+#   if current = down
+# if last = down
+#   if current = up
+#   if current = down
+#
+
+check = Downtime::DowntimeCheck.new
+check.perform
+
+#if Downtime.up?
+#  Downtime.up_now!
+#  exit 0
+#else
+#  Downtime.down_now!
+#  exit 1
+#end
