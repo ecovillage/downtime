@@ -24,8 +24,6 @@ Or install it yourself as:
 
 ## Usage
 
-Use as a cron-job (use [god]-gem if you like).
-
 Call as `downtime`.
 It will create a `downtime.log` file in the current working directory.
 
@@ -37,6 +35,14 @@ The file (`downtime.log`) will look like this:
     2015-01-02-08-10 down till 2015-01-03-08-40 (30 minutes)
     ! went up after 30 minutes of downtime.
     2015-01-02-08-40 up till 2015-01-03-08-45 (5 minutes)
+
+Use as a cron-job (use [god]-gem if you like), e.g. with `crontab -e`:
+
+    # m h  dom mon dow   command
+    */5 * * * * cd /home/downtime-service/downtime && ~/.rvm/wrappers/default/downtime
+
+(this assumes you use `rvm` and the given path exists), will result in information put into `/home/downtime-service/downtime/downtime.log`.
+
 
 ## Caveats
 
