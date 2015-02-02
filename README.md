@@ -48,6 +48,11 @@ Use as a cron-job (use [god]-gem if you like), e.g. with `crontab -e`:
 
 Its assumed you run in CET timezone.
 
+## License
+
+Copyright 2015 Felix Wolfsteller, Siedlungsgenossenschaft Ökodorf e.G.
+all code licensed under the GPL, version 3, which is included in the file `gpl-3.0.txt`.
+
 ## Contributing
 
 0. Contact me, either by creating an issue or sending me a mail - sometimes stuff is more easily done at two!
