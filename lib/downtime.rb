@@ -22,7 +22,7 @@ module Downtime
     def check_and_update_file
       lines = File.readlines @log_file
       was_down = lines[-1] =~ /down/
-      up = is_up?
+      up = is_up_dig?
       minutes = 0
       if lines.length > 1
         first_timestamp = lines[-1][/^[0-9-]*/]
@@ -56,7 +56,7 @@ module Downtime
       up
     end
 
-    def is_up? host=nil
+    def is_up_dig? host=nil
       host = @host if host.nil?
       dig = `dig +time=1 +tries=1 #{host}`
       dig.lines.find {|l| l =~ /time.*ms/}
