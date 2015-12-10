@@ -3,11 +3,13 @@ require "downtime/timestamp"
 
 module Downtime
   class DowntimeCheck
+    attr_accessor :ip
     attr_accessor :host
     attr_accessor :log_file
 
     def initialize
-      @host = "8.8.8.8"
+      @ip = "8.8.8.8"
+      @host = "http://siebenlinden.de"
       @log_file = "downtime.log"
     end
 
@@ -22,7 +24,7 @@ module Downtime
     def check_and_update_file
       lines = File.readlines @log_file
       was_down = lines[-1] =~ /down/
-      up = is_up_dig?
+      up = is_up_wget?
       minutes = 0
       if lines.length > 1
         first_timestamp = lines[-1][/^[0-9-]*/]
@@ -56,10 +58,16 @@ module Downtime
       up
     end
 
-    def is_up_dig? host=nil
-      host = @host if host.nil?
-      dig = `dig +time=1 +tries=1 #{host}`
+    def is_up_dig? ip=nil
+      ip = @ip if ip.nil?
+      dig = `dig +time=1 +tries=1 #{ip}`
       dig.lines.find {|l| l =~ /time.*ms/}
+    end
+
+    def is_up_wget host=nil
+      host = @host if host.nil?
+      wget = `wget -t 1 --timeout 1 --spider #{host}`
+      return $?.exitstatus
     end
 
     def ensure_logfile
