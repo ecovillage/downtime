@@ -10,21 +10,27 @@ module Downtime
     def initialize
       @ip = "8.8.8.8"
       @host = "http://siebenlinden.de"
-      @log_file = "downtime.log"
+      @log_file_dig = "downtime_dig.log"
+      @log_file_wget = "downtime_wget.log"
     end
 
     def perform
-      ensure_logfile
+      ensure_logfiles
       timestamp!
-      check_and_update_file
+      check_and_update_files
     end
 
     private
 
-    def check_and_update_file
-      lines = File.readlines @log_file
+    def check_and_update_files
+      check_and_update_file(@log_file_dig, &method(:is_up_dig?))
+      check_and_update_file(@log_file_wget, &method(:is_up_wget?))
+    end
+
+    def check_and_update_file(log_file, &check_mthd)
+      lines = File.readlines log_file
       was_down = lines[-1] =~ /down/
-      up = is_up_wget?
+      up = check_mthd.call
       minutes = 0
       if lines.length > 1
         first_timestamp = lines[-1][/^[0-9-]*/]
@@ -52,7 +58,7 @@ module Downtime
           lines << "#{@timestamp} down till #{@timestamp}"
         end
       end
-      File.open(@log_file, 'w') do |f|
+      File.open(log_file, 'w') do |f|
         f.puts lines
       end
       up
@@ -64,23 +70,26 @@ module Downtime
       dig.lines.find {|l| l =~ /time.*ms/}
     end
 
-    def is_up_wget host=nil
+    def is_up_wget? host=nil
       host = @host if host.nil?
-      wget = `wget -t 1 --timeout 1 --spider #{host}`
+      wget = `wget -q -t 1 --timeout 1 --spider #{host}`
       return $?.exitstatus
     end
 
-    def ensure_logfile
-      return if File.exist? @log_file
-      append_to_logfile "# This file is created by the downtime #{Downtime::VERSION} ruby gem."
+    def ensure_logfiles
+      return if(File.exist?(@log_file_dig) && File.exist?(@log_file_wget))
+      append_to_logfiles "# This file is created by the downtime #{Downtime::VERSION} ruby gem."
     end
 
     def timestamp!
       @timestamp = Timestamp.new
     end
 
-    def append_to_logfile text
-      File.open(@log_file, 'a') do |f|
+    def append_to_logfiles text
+      File.open(@log_file_wget, 'a') do |f|
+        f.puts text
+      end
+      File.open(@log_file_dig, 'a') do |f|
         f.puts text
       end
     end
