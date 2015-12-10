@@ -1,6 +1,6 @@
 # Downtime
 
-`downtime` checks your connection to a host (`8.8.8.8`) and aggregates the up- or downtimes (connection or no connection) in  a file in a human readable format.  Connection is made via a call to `dig +time=1 +tries=1 8.8.8.8` and `wget -t 1 --timeout 1 http://siebenlinden.de`, so your ruby process needs to be able to call that command - although it would be really easy to change which tool is used.
+`downtime` checks your connection to a host (`8.8.8.8`) and aggregates the up- or downtimes (connection or no connection) in  a file in a human readable format.  Connection is made via a call to `dig +time=1 +tries=1 8.8.8.8` and `wget -t 1 --timeout 1 --spider http://siebenlinden.de`, so your ruby process needs to be able to call that command - although it would be really easy to change which tool is used.
 
 It was made to track e.g. outages of your ISP.
 
